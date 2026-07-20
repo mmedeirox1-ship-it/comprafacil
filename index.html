@@ -3,49 +3,333 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compra Fácil - Smartphones em São José dos Campos</title>
+  <title>Compra Fácil — iPhones novos e seminovos em São José dos Campos</title>
+  <meta name="description" content="iPhones novos e seminovos revisados, com garantia e parcelamento em até 12x. Loja física no Alpamare Boulevard, São José dos Campos. Compra, venda e troca.">
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <meta property="og:title" content="Compra Fácil — iPhones em São José dos Campos">
+  <meta property="og:description" content="Novos e seminovos revisados, garantia e até 12x. Alpamare Boulevard, SJC.">
+  <meta property="og:image" content="https://comprafacilsjc.cloud/img/fachada.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #070707;
+      --bg-soft: #0e0e0e;
+      --card: #141414;
+      --line: #232323;
+      --green: #62b81c;
+      --green-soft: #7ed637;
+      --white: #f4f4f4;
+      --grey: #9a9a9a;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: sans-serif; background: #f5f5f5; color: #222; }
-    header { background: #1a1a2e; color: white; padding: 2rem; text-align: center; }
-    header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    header p { color: #aaa; font-size: 1rem; }
-    main { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-    .card { background: white; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .card h2 { font-size: 1.2rem; margin-bottom: 1rem; color: #1a1a2e; }
-    .card p { line-height: 1.7; color: #444; margin-bottom: 0.5rem; }
-    .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin-top: 0.5rem; }
-    footer { text-align: center; padding: 2rem; color: #999; font-size: 0.85rem; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 5vw; transition: background .35s, box-shadow .35s, padding .35s;
+    }
+    nav.scrolled { background: rgba(7,7,7,.92); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); padding: 0.6rem 5vw; }
+    .nav-logo img { height: 46px; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: .92rem; font-weight: 500; color: var(--grey); transition: color .25s; }
+    .nav-links a:hover { color: var(--white); }
+    .btn {
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: var(--green); color: #061300; font-weight: 600; font-size: .95rem;
+      padding: .78rem 1.5rem; border-radius: 999px; transition: transform .25s, box-shadow .25s, background .25s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(98,184,28,.35); background: var(--green-soft); }
+    .btn.ghost { background: transparent; color: var(--white); border: 1px solid #3a3a3a; }
+    .btn.ghost:hover { border-color: var(--green); color: var(--green-soft); box-shadow: none; }
+    .nav-cta { padding: .55rem 1.2rem; font-size: .88rem; }
+    .burger { display: none; background: none; border: 0; cursor: pointer; z-index: 110; }
+    .burger span { display: block; width: 26px; height: 2px; background: var(--white); margin: 6px 0; transition: .3s; }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100svh; display: flex; align-items: center;
+      position: relative; padding: 7rem 5vw 4rem;
+      background: radial-gradient(ellipse at 70% 20%, rgba(98,184,28,.10), transparent 55%), var(--bg);
+    }
+    .hero-inner { display: grid; grid-template-columns: 1.15fr .85fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--green-soft); border: 1px solid rgba(98,184,28,.35);
+      padding: .45rem 1rem; border-radius: 999px; margin-bottom: 1.6rem;
+    }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.12; }
+    .hero h1 em { font-style: italic; color: var(--green); }
+    .hero p.lead { color: var(--grey); font-size: 1.08rem; margin: 1.4rem 0 2.2rem; max-width: 34rem; font-weight: 300; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-photo { position: relative; }
+    .hero-photo img { border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    .hero-photo::after {
+      content: ""; position: absolute; inset: -18px; border: 1px solid rgba(98,184,28,.25);
+      border-radius: 28px; z-index: -1;
+    }
+    .scroll-hint { position: absolute; bottom: 1.6rem; left: 50%; transform: translateX(-50%); color: #555; font-size: 1.4rem; animation: bounce 2.2s infinite; }
+    @keyframes bounce { 0%,100% { transform: translate(-50%,0) } 50% { transform: translate(-50%,8px) } }
+
+    /* ===== TRUST STRIP ===== */
+    .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-soft); }
+    .strip-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
+    .strip-item { padding: 1.7rem 1rem; text-align: center; border-left: 1px solid var(--line); }
+    .strip-item:first-child { border-left: 0; }
+    .strip-item strong { display: block; font-family: 'Montserrat'; font-size: 1rem; margin-bottom: .3rem; }
+    .strip-item span { color: var(--grey); font-size: .85rem; font-weight: 300; }
+    .strip-item .ico { color: var(--green); font-size: 1.3rem; display: block; margin-bottom: .5rem; }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 6rem 5vw; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .kicker { color: var(--green-soft); text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; font-weight: 600; margin-bottom: .9rem; }
+    h2.title { font-size: clamp(1.7rem, 3.4vw, 2.5rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.2rem; }
+    .muted { color: var(--grey); font-weight: 300; line-height: 1.85; }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; }
+    .split .photo img { border-radius: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.55); }
+    .checks { list-style: none; margin-top: 1.8rem; }
+    .checks li { display: flex; gap: .8rem; margin-bottom: .95rem; color: #cfcfcf; font-weight: 300; }
+    .checks li::before { content: "✓"; color: var(--green); font-weight: 700; }
+
+    /* ===== PRODUCTS ===== */
+    #produtos { background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
+    .pcard { position: relative; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid var(--line); }
+    .pcard img { aspect-ratio: 3/4; object-fit: cover; width: 100%; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .pcard:hover img { transform: scale(1.06); }
+    .pcard .cap {
+      position: absolute; inset: auto 0 0 0; padding: 2.2rem 1.1rem .95rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.85));
+      font-family: 'Montserrat'; font-weight: 600; font-size: .95rem;
+    }
+    .center-cta { text-align: center; margin-top: 3rem; }
+
+    /* ===== STORE ===== */
+    .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 3rem; }
+    .store-grid img { border-radius: 16px; aspect-ratio: 4/3; object-fit: cover; width: 100%; border: 1px solid var(--line); }
+    .addr-card {
+      margin-top: 2.2rem; background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 1.8rem 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .addr-card p { color: var(--grey); font-weight: 300; line-height: 1.7; }
+    .addr-card strong { color: var(--white); font-family: 'Montserrat'; display: block; margin-bottom: .3rem; }
+
+    /* ===== CONTACT ===== */
+    #contato { text-align: center; background: radial-gradient(ellipse at 50% 100%, rgba(98,184,28,.12), transparent 60%), var(--bg); }
+    #contato .btn.big { font-size: 1.1rem; padding: 1.05rem 2.4rem; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2.4rem; }
+
+    /* ===== FOOTER ===== */
+    footer { border-top: 1px solid var(--line); padding: 3rem 5vw 2.2rem; background: var(--bg-soft); }
+    .foot { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .foot img { height: 44px; margin-bottom: 1rem; }
+    .foot p, .foot a { color: #7c7c7c; font-size: .84rem; font-weight: 300; line-height: 1.8; }
+    .foot a:hover { color: var(--green-soft); }
+    .foot-bottom { max-width: 1200px; margin: 2.2rem auto 0; padding-top: 1.4rem; border-top: 1px solid var(--line); color: #5c5c5c; font-size: .78rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+
+    /* ===== REVEAL EFFECTS ===== */
+    .reveal { opacity: 0; transform: translateY(42px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+    .reveal.from-left { transform: translateX(-52px); }
+    .reveal.from-right { transform: translateX(52px); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s } .d2 { transition-delay: .22s } .d3 { transition-delay: .34s } .d4 { transition-delay: .46s }
+
+    /* ===== WHATS FLOAT ===== */
+    .wa-float {
+      position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 90;
+      width: 58px; height: 58px; border-radius: 50%; background: #25d366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45); transition: transform .25s;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .wa-float svg { width: 30px; height: 30px; fill: #fff; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 900px) {
+      .hero-inner, .split, .store-grid { grid-template-columns: 1fr; }
+      .grid4 { grid-template-columns: 1fr 1fr; }
+      .strip-inner { grid-template-columns: 1fr 1fr; }
+      .strip-item { border-left: 0; border-top: 1px solid var(--line); }
+      .strip-item:nth-child(-n+2) { border-top: 0; }
+      .split.rev .photo { order: -1; }
+      .hero { padding-top: 6.5rem; }
+      .nav-links {
+        position: fixed; inset: 0; background: rgba(7,7,7,.97); backdrop-filter: blur(10px);
+        flex-direction: column; justify-content: center; gap: 2.2rem;
+        transform: translateX(100%); transition: transform .4s cubic-bezier(.2,.7,.2,1);
+      }
+      .nav-links.open { transform: none; }
+      .nav-links a { font-size: 1.2rem; }
+      .burger { display: block; }
+      .burger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      .burger.open span:nth-child(2) { opacity: 0; }
+      .burger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>📱 Compra Fácil</h1>
-    <p>Smartphones usados com qualidade — São José dos Campos, SP</p>
-  </header>
-  <main>
-    <div class="card">
-      <h2>Sobre a empresa</h2>
-      <p>A Compra Fácil SJC, razão social 5M Mobile AI, é especializada na compra e venda de smartphones usados, com foco em iPhones. Atendemos clientes em São José dos Campos e região com transparência, qualidade e agilidade. Estamos no Alpamare Boulevard.</p>
-      <span class="badge">✓ Empresa verificada</span>
+
+<nav id="nav">
+  <a class="nav-logo" href="#inicio"><img src="img/logo.png" alt="Compra Fácil"></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#inicio">Início</a>
+    <a href="#quem-somos">Quem Somos</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#loja">A Loja</a>
+    <a href="#contato">Contato</a>
+    <a class="btn nav-cta" href="https://wa.me/5512978132252?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Compra%20F%C3%A1cil%20e%20quero%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-tag reveal">● São José dos Campos · Alpamare Boulevard</span>
+      <h1 class="reveal d1">Seu próximo iPhone está na <em>Compra&nbsp;Fácil</em></h1>
+      <p class="lead reveal d2">Novos lacrados e seminovos revisados, com garantia, procedência e parcelamento em até 12x. Atendimento de verdade, na loja ou pelo WhatsApp.</p>
+      <div class="hero-ctas reveal d3">
+        <a class="btn" href="https://wa.me/5512978132252?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Compra%20F%C3%A1cil%20e%20quero%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn ghost" href="https://www.instagram.com/comprafacilsjc" target="_blank" rel="noopener">@comprafacilsjc</a>
+      </div>
     </div>
-    <div class="card">
-      <h2>Informações</h2>
-      <p><strong>Razão social:</strong> 5M Mobile AI</p>
-      <p><strong>Nome fantasia:</strong> Compra Fácil SJC</p>
-      <p><strong>CNPJ:</strong> 30.864.907/0001-60</p>
-      <p><strong>Endereço:</strong> Alpamare Boulevard — Av. Dep. Benedito Matarazzo, 5101, Jardim Alvorada, São José dos Campos, SP — CEP 12246-840</p>
-      <p><strong>Localização:</strong> Terceira loja do corredor à direita — Estacionamento gratuito</p>
-      <p><strong>Telefone:</strong> (12) 99211-0542</p>
+    <div class="hero-photo reveal from-right d2">
+      <img src="img/fachada.jpg" alt="Fachada da loja Compra Fácil no Alpamare Boulevard">
     </div>
-    <div class="card">
-      <h2>Contato</h2>
-      <p>Entre em contato pelo WhatsApp ou visite nossa loja.</p>
-      <p><strong>Instagram:</strong> @comprafacilsjc</p>
+  </div>
+  <span class="scroll-hint">▾</span>
+</header>
+
+<div class="strip">
+  <div class="strip-inner">
+    <div class="strip-item reveal"><span class="ico">🛡</span><strong>Garantia real</strong><span>em todos os aparelhos</span></div>
+    <div class="strip-item reveal d1"><span class="ico">💳</span><strong>Até 12x</strong><span>parcelamento no cartão</span></div>
+    <div class="strip-item reveal d2"><span class="ico">🔎</span><strong>Seminovos revisados</strong><span>testados peça por peça</span></div>
+    <div class="strip-item reveal d3"><span class="ico">📍</span><strong>Loja física</strong><span>Alpamare Boulevard, SJC</span></div>
+  </div>
+</div>
+
+<section id="quem-somos">
+  <div class="wrap split">
+    <div class="reveal from-left">
+      <p class="kicker">Quem somos</p>
+      <h2 class="title">Uma loja de iPhone feita pra você comprar com confiança</h2>
+      <p class="muted">A Compra Fácil é especializada em compra, venda e troca de iPhones em São José dos Campos. Cada seminovo passa por revisão completa antes de ir pra vitrine, e todo aparelho sai com garantia e nota. Sem pegadinha, sem letra miúda — o combinado é o combinado.</p>
+      <ul class="checks">
+        <li>iPhones novos lacrados e seminovos revisados</li>
+        <li>Aceitamos seu usado como parte do pagamento</li>
+        <li>Acessórios premium: capas, películas e carregadores</li>
+        <li>Atendimento rápido pelo WhatsApp, com preço na hora</li>
+      </ul>
     </div>
-  </main>
-  <footer>
-    © 2026 Compra Fácil — São José dos Campos, SP
-  </footer>
+    <div class="photo reveal from-right"><img src="img/interior.jpg" alt="Interior da loja Compra Fácil" loading="lazy"></div>
+  </div>
+</section>
+
+<section id="produtos">
+  <div class="wrap" style="text-align:center">
+    <p class="kicker reveal">Produtos</p>
+    <h2 class="title reveal d1">Do lacrado ao seminovo, na cor que você quer</h2>
+    <p class="muted reveal d2" style="max-width:44rem;margin:0 auto">Trabalhamos com toda a linha iPhone, pronta entrega. Consulta de preço é rápida e sem compromisso: chama no WhatsApp e recebe a tabela do dia.</p>
+    <div class="grid4">
+      <figure class="pcard reveal d1"><img src="img/prod1.jpg" alt="iPhone novo lacrado" loading="lazy"><figcaption class="cap">Novos lacrados</figcaption></figure>
+      <figure class="pcard reveal d2"><img src="img/prod2.jpg" alt="iPhones seminovos" loading="lazy"><figcaption class="cap">Seminovos revisados</figcaption></figure>
+      <figure class="pcard reveal d3"><img src="img/prod3.jpg" alt="iPhone em detalhe" loading="lazy"><figcaption class="cap">Todas as cores</figcaption></figure>
+      <figure class="pcard reveal d4"><img src="img/prod4.jpg" alt="iPhone na caixa" loading="lazy"><figcaption class="cap">Pronta entrega</figcaption></figure>
+    </div>
+    <div class="center-cta reveal"><a class="btn" href="https://wa.me/5512978132252?text=Ol%C3%A1!%20Quero%20consultar%20o%20pre%C3%A7o%20de%20um%20iPhone." target="_blank" rel="noopener">Consultar preços agora</a></div>
+  </div>
+</section>
+
+<section id="loja">
+  <div class="wrap">
+    <p class="kicker reveal">A loja</p>
+    <h2 class="title reveal d1">Vem tomar um café e conhecer de perto</h2>
+    <p class="muted reveal d2" style="max-width:44rem">Estamos no Alpamare Boulevard, com estacionamento gratuito. Vitrine completa de aparelhos e uma parede inteira de acessórios pra você levar tudo em um lugar só.</p>
+    <div class="store-grid">
+      <img class="reveal from-left" src="img/vitrine.jpg" alt="Vitrine de produtos Apple" loading="lazy">
+      <img class="reveal from-right" src="img/acessorios.jpg" alt="Parede de capas e acessórios" loading="lazy">
+    </div>
+    <div class="addr-card reveal">
+      <p><strong>Compra Fácil — Alpamare Boulevard</strong>
+      Av. Dep. Benedito Matarazzo, 5101 · Jardim Alvorada<br>
+      São José dos Campos/SP · CEP 12246-840<br>
+      Terceira loja do corredor à direita · Estacionamento gratuito</p>
+      <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Alpamare+Boulevard+Av.+Deputado+Benedito+Matarazzo+5101+S%C3%A3o+Jos%C3%A9+dos+Campos" target="_blank" rel="noopener">Ver no mapa</a>
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <p class="kicker reveal">Contato</p>
+    <h2 class="title reveal d1">Fala com a gente agora</h2>
+    <p class="muted reveal d2" style="max-width:38rem;margin:0 auto">Preço, avaliação do seu usado ou qualquer dúvida — nosso time responde rapidinho.</p>
+    <div class="contact-links reveal d3">
+      <a class="btn big" href="https://wa.me/5512978132252?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Compra%20F%C3%A1cil%20e%20quero%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener">WhatsApp (12) 97813-2252</a>
+      <a class="btn ghost big" href="https://www.instagram.com/comprafacilsjc" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div>
+      <img src="img/logo.png" alt="Compra Fácil">
+      <p>iPhones novos e seminovos com garantia<br>em São José dos Campos/SP.</p>
+    </div>
+    <div>
+      <p><strong style="color:#cfcfcf">Endereço</strong><br>
+      Av. Dep. Benedito Matarazzo, 5101<br>
+      Alpamare Boulevard · Jardim Alvorada<br>
+      São José dos Campos/SP · CEP 12246-840</p>
+    </div>
+    <div>
+      <p><strong style="color:#cfcfcf">Institucional</strong><br>
+      <a href="privacidade.html">Política de Privacidade</a><br>
+      <a href="https://www.instagram.com/comprafacilsjc" target="_blank" rel="noopener">Instagram</a><br>
+      <a href="https://wa.me/5512978132252" target="_blank" rel="noopener">WhatsApp</a></p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Compra Fácil · 5M Mobile AI · CNPJ 30.864.907/0001-60</span>
+    <span>São José dos Campos, SP</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/5512978132252?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Compra%20F%C3%A1cil." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.6.8 5 2.2 7L4 29l7.2-2.1c1.9 1 4 1.6 6.2 1.6h.1c6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22.5c-2 0-3.8-.5-5.4-1.5l-.4-.2-4.3 1.2 1.2-4.1-.3-.4C5.6 18.9 5 17 5 15 5 9 9.9 4 16 4s11 4.9 11 11-4.9 10.5-11 10.5zm6-7.9c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.7.2-.2.3-.8 1.1-1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2.1-.4 0-.6-.1-.2-.7-1.8-1-2.4-.3-.6-.5-.5-.7-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.4c.2.2 2.3 3.5 5.5 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg>
+</a>
+
+<script>
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), { passive: true });
+
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    links.classList.remove('open');
+  }));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
 </body>
 </html>
