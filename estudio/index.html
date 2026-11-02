@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Estúdio de Stories · Compra Fácil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@600&family=Russo+One&family=Teko:wght@700&display=block" rel="stylesheet">
+<style>
+  /* Gera textos no estilo dos vídeos (Missão Black Fácil) como PNG transparente pra usar de figurinha nos Stories. */
+  :root { --rosa: #ff3dbe; --ciano: #00e5ff; --verde: #8ed641; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #07060d; color: #eee; font: 16px/1.4 system-ui, -apple-system, sans-serif; padding: 18px 16px 40px; max-width: 560px; margin: auto; }
+  h1 { font: 400 36px/1 'Bebas Neue', sans-serif; letter-spacing: 1px; } h1 em { color: var(--verde); font-style: normal; }
+  h2 { font: 400 28px/1 'Bebas Neue', sans-serif; margin: 32px 0 6px; letter-spacing: 1px; }
+  .estilos { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+  .estilos button { flex: 1 0 30%; padding: 11px 6px; border-radius: 10px; border: 2px solid #2c2a3a; background: #15131f; color: #fff; font-weight: 600; font-size: 15px; }
+  .estilos button.on { border-color: var(--rosa); box-shadow: 0 0 12px rgba(255,61,190,.5); }
+  label { display: block; font-size: 13px; color: #aaa; margin: 12px 0 4px; }
+  input, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2c2a3a; background: #15131f; color: #fff; font-size: 17px; font-family: inherit; }
+  textarea { min-height: 86px; resize: vertical; }
+  .dica { font-size: 13px; color: #999; margin-top: 8px; } .dica b { color: var(--verde); }
+  .xadrez { background: repeating-conic-gradient(#1c1a27 0 25%, #12101a 0 50%) 0 0 / 22px 22px; }
+  .palco { margin-top: 16px; border-radius: 14px; padding: 14px; display: flex; justify-content: center; align-items: center; min-height: 170px; }
+  .palco canvas { max-width: 100%; max-height: 420px; height: auto; }
+  .acoes { display: flex; gap: 10px; margin-top: 12px; }
+  .acoes button { flex: 1; padding: 15px; border-radius: 12px; border: 0; font-weight: 700; font-size: 16px; }
+  .salvar { background: var(--verde); color: #05040a; } .baixar { background: #2a2738; color: #fff; }
+  .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .grade button { border: 1px solid #2a2738; border-radius: 10px; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 112px; }
+  .grade canvas { max-width: 100%; max-height: 120px; }
+  .como { font-size: 14px; color: #bbb; background: #15131f; border-radius: 12px; padding: 12px 14px; margin-top: 24px; } .como b { color: #fff; }
+</style></head>
+<body>
+  <h1>Estúdio de Stories · Compra <em>Fácil</em></h1>
+  <div class="estilos" id="estilos"></div>
+  <div id="campos"></div>
+  <p class="dica">Palavra entre <b>*asteriscos*</b> fica verde. Enter quebra a linha.</p>
+  <div class="palco xadrez"><canvas id="tela" width="10" height="10"></canvas></div>
+  <div class="acoes"><button class="salvar" id="salvar">Salvar / enviar</button><button class="baixar" id="baixar">Baixar PNG</button></div>
+  <h2>Figurinhas prontas</h2>
+  <p class="dica">Toque numa figurinha pra salvar.</p>
+  <div class="grade" id="grade"></div>
+  <div class="como"><b>Como usar no story:</b> salve a imagem → no story, toque no ícone de figurinha → <b>Foto</b> → escolha a imagem e ajuste o tamanho com dois dedos.</div>
+<script>
+const ROSA = '#ff3dbe', CIANO = '#00e5ff', VERDE = '#8ed641';
+const ESTILOS = {
+  titulo:  { nome: 'Título', campos: [['texto', 'Texto', 'POR TEMPO\n*LIMITADO*', 1]] },
+  aviso:   { nome: 'Aviso neon', campos: [['topo', 'Linha de cima', '● AO VIVO'], ['texto', 'Texto', 'Direto da *loja*']] },
+  oferta:  { nome: 'Oferta', campos: [['topo', 'Em cima do número (opcional)', 'ATÉ'], ['numero', 'Número', '40%'], ['sufixo', 'Embaixo do número (opcional)', 'OFF'], ['texto', 'Produto ou serviço', 'NA *MANUTENÇÃO*']] },
+  legenda: { nome: 'Legenda', campos: [['texto', 'Texto', 'O IPHONE QUE VOCÊ QUER\nTÁ *AQUI*', 1]] },
+  botao:   { nome: 'Botão', campos: [['texto', 'Texto', 'CHAMA NO DIRECT']] },
+};
+const PRONTAS = [
+  ['aviso', { topo: '● NOVIDADE', texto: '*Chegou* na loja' }],
+  ['aviso', { topo: '● AO VIVO', texto: 'Direto da *loja*' }],
+  ['aviso', { topo: '● ESTOQUE', texto: 'Últimas *unidades*' }],
+  ['aviso', { topo: '● ALPAMARE BOULEVARD', texto: 'Compra *Fácil* · SJC' }],
+  ['titulo', { texto: 'PRONTA\n*ENTREGA*' }],
+  ['titulo', { texto: 'OFERTA\nDO *DIA*' }],
+  ['titulo', { texto: 'POR TEMPO\n*LIMITADO*' }],
+  ['titulo', { texto: '*VENDIDO*' }],
+  ['titulo', { texto: 'BLACK\n*FÁCIL*' }],
+  ['titulo', { texto: 'ÚLTIMA\n*UNIDADE*' }],
+  ['legenda', { texto: 'SEMINOVO COM\n*GARANTIA*' }],
+  ['legenda', { texto: 'ACEITAMOS SEU IPHONE\nNA *TROCA*' }],
+  ['botao', { texto: 'CHAMA NO DIRECT' }],
+  ['botao', { texto: 'CHAMA NO WHATSAPP' }],
+  ['botao', { texto: 'VEM PRA LOJA' }],
+  ['botao', { texto: 'RESPONDE ESSE STORY' }],
+];
+
+// ---------- desenho ----------
+const med = document.createElement('canvas').getContext('2d');
+const novo = (w, h) => { const c = document.createElement('canvas'); c.width = Math.ceil(w); c.height = Math.ceil(h); return c; };
+const partes = s => s.split(/(\*[^*]+\*)/).filter(Boolean).map(p => p.length > 2 && p[0] === '*' && p.at(-1) === '*' ? { t: p.slice(1, -1), v: true } : { t: p.replace(/\*/g, ''), v: false });
+const larg = (ctx, ps) => ps.reduce((w, p) => w + ctx.measureText(p.t).width, 0);
+const cap = ctx => ctx.measureText('H').actualBoundingBoxAscent;
+function cada(ctx, ps, x, y, fn) { for (const p of ps) { fn(p, x, y); x += ctx.measureText(p.t).width; } }
+const linhas = s => s.split('\n').map(l => l.trim()).filter(Boolean);
+
+// Bebas Neue com contorno preto, sombra cromática rosa/ciano e extrusão (título do teaser)
+function bebas(itens) { // itens: [{t, s, cor}]
+  const info = itens.map(i => { med.font = `400 ${i.s}px "Bebas Neue"`; const ps = partes(i.t); return { ...i, ps, w: larg(med, ps), h: cap(med) }; });
+  const pad = 70, gap = k => info[k].s * 0.16;
+  const W = Math.max(...info.map(i => i.w + i.s * 0.08)) + pad * 2;
+  const H = info.reduce((h, i, k) => h + i.h + (k ? gap(k) : 0), 0) + pad * 2 + info.at(-1).s * 0.07;
+  const c = novo(W, H), ctx = c.getContext('2d');
+  ctx.lineJoin = 'round';
+  let yb = pad;
+  info.forEach((i, k) => {
+    yb += i.h + (k ? gap(k) : 0);
+    ctx.font = `400 ${i.s}px "Bebas Neue"`;
+    const x0 = (W - i.w) / 2, d = i.s * 0.045, o = i.s * 0.022, cam = fn => cada(ctx, i.ps, x0, yb, fn);
+    ctx.fillStyle = 'rgba(255,61,190,.95)'; cam((p, x, y) => ctx.fillText(p.t, x - d, y));
+    ctx.fillStyle = 'rgba(0,229,255,.95)'; cam((p, x, y) => ctx.fillText(p.t, x + d, y));
+    ctx.fillStyle = '#000'; ctx.strokeStyle = '#000'; ctx.lineWidth = o * 2;
+    for (let n = 4; n >= 1; n--) cam((p, x, y) => { ctx.strokeText(p.t, x, y + n * i.s * 0.016); ctx.fillText(p.t, x, y + n * i.s * 0.016); });
+    cam((p, x, y) => ctx.strokeText(p.t, x, y));
+    cam((p, x, y) => {
+      ctx.fillStyle = p.v ? VERDE : (i.cor || '#fff');
+      if (p.v) { ctx.shadowColor = 'rgba(142,214,65,.85)'; ctx.shadowBlur = i.s * 0.18; }
+      ctx.fillText(p.t, x, y); ctx.shadowBlur = 0;
+    });
+  });
+  return c;
+}
+
+// Russo One itálico com contorno preto e cromático (legendas do teaser)
+function russo(texto, s = 66) {
+  const ls = linhas(texto.toUpperCase()).map(partes);
+  med.font = `400 ${s}px "Russo One"`;
+  const ws = ls.map(ps => larg(med, ps)), h = cap(med), sk = 0.2, lh = s * 1.14, pad = 44;
+  const c = novo(Math.max(...ws) + h * sk + pad * 2, h + (ls.length - 1) * lh + pad * 2 + s * 0.2), ctx = c.getContext('2d');
+  ctx.font = med.font; ctx.lineJoin = 'round';
+  ls.forEach((ps, k) => {
+    ctx.save(); ctx.translate((c.width - ws[k] - h * sk) / 2 + h * sk, pad + h + k * lh); ctx.transform(1, 0, -sk, 1, 0, 0);
+    const d = s * 0.09, cam = fn => cada(ctx, ps, 0, 0, fn);
+    ctx.fillStyle = 'rgba(255,61,190,.85)'; cam((p, x, y) => ctx.fillText(p.t, x - d, y));
+    ctx.fillStyle = 'rgba(0,229,255,.85)'; cam((p, x, y) => ctx.fillText(p.t, x + d, y));
+    ctx.strokeStyle = '#000'; ctx.lineWidth = s * 0.09; cam((p, x, y) => ctx.strokeText(p.t, x, y));
+    cam((p, x, y) => { ctx.fillStyle = p.v ? VERDE : '#fff'; ctx.fillText(p.t, x, y); });
+    ctx.restore();
+  });
+  return c;
+}
+
+function empilha(cs, sobra = 0) {
+  const c = novo(Math.max(...cs.map(x => x.width)), cs.reduce((h, x) => h + x.height, 0) - sobra * (cs.length - 1)), ctx = c.getContext('2d');
+  let y = 0; for (const x of cs) { ctx.drawImage(x, (c.width - x.width) / 2, y); y += x.height - sobra; }
+  return c;
+}
+
+// Aviso neon (toast do teaser)
+function aviso(o) {
+  const topo = (o.topo || '').toUpperCase(), ps = partes((o.texto || '').toUpperCase()), esp = 9;
+  med.font = '600 34px Rajdhani'; const hS = cap(med), wTop = [...topo].reduce((w, ch) => w + med.measureText(ch).width + esp, -esp);
+  med.font = '700 80px Teko'; const hB = cap(med), wBig = larg(med, ps);
+  const pl = 122, pr = 44, pt = 32, pb = 30, mg = 50, bw = pl + Math.max(wTop, wBig) + pr, bh = pt + (topo ? hS + 16 : 0) + hB + pb;
+  const c = novo(bw + mg * 2, bh + mg * 2), ctx = c.getContext('2d'), x = mg, y = mg;
+  const g = ctx.createLinearGradient(x, y, x + bw, y + bh * 0.3);
+  g.addColorStop(0, 'rgba(0,120,140,.9)'); g.addColorStop(.45, 'rgba(20,8,40,.92)'); g.addColorStop(1, 'rgba(20,8,40,.92)');
+  ctx.beginPath(); ctx.roundRect(x, y, bw, bh, 26); ctx.fillStyle = g; ctx.fill();
+  ctx.save(); ctx.strokeStyle = ROSA; ctx.lineWidth = 4; ctx.shadowColor = ROSA;
+  ctx.shadowBlur = 40; ctx.stroke(); ctx.shadowBlur = 16; ctx.stroke(); ctx.restore();
+  ctx.save(); ctx.translate(x + 62, y + bh / 2); ctx.rotate(Math.PI / 4); ctx.shadowColor = CIANO; ctx.shadowBlur = 18;
+  ctx.strokeStyle = CIANO; ctx.lineWidth = 5; ctx.strokeRect(-20, -20, 40, 40); ctx.fillStyle = CIANO; ctx.fillRect(-9, -9, 18, 18); ctx.restore();
+  let yb = y + pt;
+  if (topo) {
+    yb += hS; ctx.font = '600 34px Rajdhani'; ctx.fillStyle = CIANO; ctx.shadowColor = CIANO; ctx.shadowBlur = 12;
+    let xx = x + pl; for (const ch of topo) { ctx.fillText(ch, xx, yb); xx += ctx.measureText(ch).width + esp; }
+    ctx.shadowBlur = 0; yb += 16;
+  }
+  yb += hB; ctx.font = '700 80px Teko';
+  cada(ctx, ps, x + pl, yb, (p, xx, yy) => {
+    ctx.fillStyle = p.v ? VERDE : '#fff'; ctx.shadowColor = p.v ? VERDE : ROSA; ctx.shadowBlur = 24; ctx.fillText(p.t, xx, yy);
+    ctx.shadowBlur = 8; ctx.fillText(p.t, xx, yy); ctx.shadowBlur = 0;
+  });
+  return c;
+}
+
+// Botão verde (CTA do teaser)
+function botao(o) {
+  const ps = partes((o.texto || '').toUpperCase()), s = 58, sk = 0.2;
+  med.font = `400 ${s}px "Russo One"`; const w = larg(med, ps), h = cap(med);
+  const px = 64, py = 34, bw = w + px * 2 + h * sk, bh = h + py * 2, mg = 50;
+  const c = novo(bw + mg * 2, bh + mg * 2 + 10), ctx = c.getContext('2d'), x = mg, y = mg;
+  const pilula = dy => { ctx.beginPath(); ctx.roundRect(x, y + dy, bw, bh, bh / 2); };
+  pilula(10); ctx.fillStyle = '#000'; ctx.fill();
+  ctx.save(); ctx.shadowColor = 'rgba(142,214,65,.85)'; ctx.shadowBlur = 46; pilula(0); ctx.fillStyle = VERDE; ctx.fill(); ctx.restore();
+  pilula(0); ctx.lineWidth = 6; ctx.strokeStyle = '#000'; ctx.stroke();
+  ctx.save(); ctx.translate(x + px + h * sk, y + py + h); ctx.transform(1, 0, -sk, 1, 0, 0); ctx.font = med.font;
+  cada(ctx, ps, 0, 0, (p, xx, yy) => { ctx.fillStyle = p.v ? '#fff' : '#05040a'; ctx.fillText(p.t, xx, yy); });
+  ctx.restore();
+  return c;
+}
+
+function oferta(o) {
+  const itens = [];
+  if (o.topo) itens.push({ t: o.topo.toUpperCase(), s: 150 });
+  itens.push({ t: `*${(o.numero || '').replace(/\*/g, '')}*`, s: 400 });
+  if (o.sufixo) itens.push({ t: o.sufixo.toUpperCase(), s: 190 });
+  const cs = [bebas(itens)];
+  if (o.texto) cs.push(russo(o.texto, 80));
+  return empilha(cs, 50);
+}
+
+const DESENHA = {
+  titulo: o => bebas(linhas((o.texto || '').toUpperCase()).map(t => ({ t, s: 220 }))),
+  aviso, oferta, botao,
+  legenda: o => russo(o.texto || ''),
+};
+window.figurinha = (estilo, o) => DESENHA[estilo](o);  // usado também pra exportar o pacote
+
+// ---------- salvar ----------
+const nomeArq = o => 'cf-' + Object.values(o).join(' ').replace(/\s+/g, ' ').normalize('NFD').replace(/[^\w ]/g, '').trim().toLowerCase().replace(/\s+/g, '-').slice(0, 40);
+function baixar(c, nome) { const a = document.createElement('a'); a.href = c.toDataURL('image/png'); a.download = nome + '.png'; a.click(); }
+async function salvar(c, nome) {
+  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  const f = new File([blob], nome + '.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [f] })) {
+    try { await navigator.share({ files: [f] }); return; } catch (e) { if (e.name === 'AbortError') return; }
+  }
+  baixar(c, nome);
+}
+
+// ---------- tela ----------
+const tela = document.getElementById('tela');
+const valores = Object.fromEntries(Object.entries(ESTILOS).map(([k, e]) => [k, Object.fromEntries(e.campos.map(([n, , v]) => [n, v]))]));
+let atual = 'titulo';
+function desenhar() {
+  const c = DESENHA[atual](valores[atual]);
+  tela.width = c.width; tela.height = c.height; tela.getContext('2d').drawImage(c, 0, 0);
+}
+function montarCampos() {
+  document.querySelectorAll('#estilos button').forEach(b => b.classList.toggle('on', b.dataset.k === atual));
+  const box = document.getElementById('campos'); box.innerHTML = '';
+  for (const [n, rot, , multi] of ESTILOS[atual].campos) {
+    const l = document.createElement('label'); l.textContent = rot;
+    const i = document.createElement(multi ? 'textarea' : 'input'); i.value = valores[atual][n];
+    i.oninput = () => { valores[atual][n] = i.value; desenhar(); };
+    box.append(l, i);
+  }
+  desenhar();
+}
+for (const [k, e] of Object.entries(ESTILOS)) {
+  const b = document.createElement('button'); b.textContent = e.nome; b.dataset.k = k;
+  b.onclick = () => { atual = k; montarCampos(); };
+  document.getElementById('estilos').append(b);
+}
+document.getElementById('salvar').onclick = () => salvar(tela, nomeArq(valores[atual]));
+document.getElementById('baixar').onclick = () => baixar(tela, nomeArq(valores[atual]));
+
+function grade() {
+  const g = document.getElementById('grade'); g.innerHTML = '';
+  for (const [e, o] of PRONTAS) {
+    const c = DESENHA[e](o), b = document.createElement('button'); b.className = 'xadrez';
+    b.append(c); b.onclick = () => salvar(c, nomeArq(o)); g.append(b);
+  }
+}
+window.addEventListener('load', async () => {
+  const amostra = 'AÉÇÃÚ%·●';
+  await Promise.all(['400 100px "Bebas Neue"', '400 100px "Russo One"', '700 100px Teko', '600 100px Rajdhani'].map(f => document.fonts.load(f, amostra)));
+  await document.fonts.ready;
+  montarCampos(); grade();
+  window.pronto = true;
+});
+</script>
+</body></html>
